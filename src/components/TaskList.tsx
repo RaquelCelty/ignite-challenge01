@@ -16,22 +16,29 @@ export function TaskList() {
 
 
   function handleCreateNewTask() {
-    if (newTaskTitle === "") return;
+    //if (newTaskTitle === "") return; // ANTES DE ASSISTIR O VÍDEO DA CORREÇÃO
+    if (!newTaskTitle) return; // DEPOIS DE ASSISTIR O VÍDEO DA CORREÇÃO
 
-    const task: Task = {
+    const task = {
       id: Math.floor(Math.random() * 1000),
       title: newTaskTitle,
       isComplete: false
     };
 
-    setTasks([...tasks, task]);
+    setTasks(oldState => [...oldState, task]);
+
+    /* Vídeo da correção: 
+      - setar o newTaskTitle pra vazio depois de inserir 
+      - usar oldState: setTasks(oldState => [...oldState, task]); ? - como eu tinha feito antes: setTasks([...tasks, task]); ?
+    */
+    setNewTaskTitle("");
   }
 
-  function handleToggleTaskCompletion(e: React.MouseEvent<HTMLInputElement, MouseEvent>, id: number) {
+  function handleToggleTaskCompletion(id: number) {
+    /* ANTES DE ASSISTIR O VÍDEO DA CORREÇÃO
     const toggleCheck = e.currentTarget.checked;
-
-    const newTaskArray = tasks.map(item => (item.id === id ? { ...item, isComplete: toggleCheck } : item));
-
+    const newTaskArray = tasks.map(item => (item.id === id ? { ...item, isComplete: toggleCheck } : item)); */
+    const newTaskArray = tasks.map(item => (item.id === id ? { ...item, isComplete: !item.isComplete } : item)); // DEPOIS DE ASSISTIR O VÍDEO DA CORREÇÃO
     setTasks(newTaskArray);
   }
 
@@ -68,7 +75,7 @@ export function TaskList() {
                     type="checkbox"
                     readOnly
                     checked={task.isComplete}
-                    onClick={(e) => handleToggleTaskCompletion(e, task.id)}
+                    onClick={() => handleToggleTaskCompletion(task.id)}
                   />
                   <span className="checkmark"></span>
                 </label>
